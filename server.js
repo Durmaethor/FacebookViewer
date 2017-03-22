@@ -5,6 +5,10 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 
 var app = express();
 
+app.use(session({secret: "I am a nerd"}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 passport.use(new FacebookStrategy({
   clientID: '1506083429423908',
   clientSecret: '1deb7fd14110848ce2aff9334eef165a',
