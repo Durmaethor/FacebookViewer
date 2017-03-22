@@ -1,3 +1,6 @@
+
+// Working Facebook login / authentication
+
 var express = require('express');
 var passport = require('passport');
 var session = require('express-session');
@@ -17,18 +20,25 @@ passport.use(new FacebookStrategy({
   return next(null, profile);
 }));
 
-app.get('auth/facebook', passport.authenticate('facebook'));
-app.get('auth/facebook/callback', passport.authenticate('facebook', {
-    successRedirect: '/',
-    failureRedirect: '/login'
+app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/me',
+    failureRedirect: '/auth/facebook'
 }), function(req,res){
     console.log(req.session);
 });
 
-app.get('/', requireAuth, function(req, res){
-    return res.sendFile(__dirname+'/public/home.html');
+passport.serializeUser(function(user, done){ //turns this into a string to put on session
+    done(null, user);
 });
 
+passport.deserializeUser(function(obj, done){ //turns back into an object to pull off session
+    done(null, obj);
+});
+
+app.get('/me', function(req, res){
+    res.send(req.user);
+});
 
 
 
