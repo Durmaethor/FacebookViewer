@@ -17,6 +17,22 @@ passport.use(new FacebookStrategy({
   return next(null, profile);
 }));
 
+app.get('auth/facebook', passport.authenticate('facebook'));
+app.get('auth/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+}), function(req,res){
+    console.log(req.session);
+});
+
+app.get('/', requireAuth, function(req, res){
+    return res.sendFile(__dirname+'/public/home.html');
+});
+
+
+
+
+
 app.listen(3000, function(){
     console.log("We have ears");
 });
