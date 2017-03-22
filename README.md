@@ -26,7 +26,7 @@ Now let's put in the code necessary to get our authentication working:
 
 * Include the passport.initialize middleware
 
-`app.use(passport.initialize())`
+`app.use(passport.initialize())
 
 * Include the passport.session middleware 
 
